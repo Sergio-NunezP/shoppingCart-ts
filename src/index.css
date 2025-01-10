@@ -810,7 +810,7 @@ button:not(:disabled),
 }
 
 .header {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/img/header.jpg");
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/img/header2.jpg");
     background-position: 50%;
     background-size: cover;
     position: relative;
@@ -832,4 +832,8 @@ button:not(:disabled),
         animation-name: animarImagen;
         z-index: 10;
     }
+}
+
+main {
+    background-color: var(--bs-gray-400)
 }
