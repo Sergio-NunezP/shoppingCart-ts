@@ -21,6 +21,9 @@ export const initialState: CartState = {
     cart: []
 }
 
+// Minimo y máximo para elegir
+const MIN_ITEMS = 1
+const MAX_ITEMS = 5
 
 // Definir el reducer
 export const cartReducer = (
@@ -30,8 +33,23 @@ export const cartReducer = (
 ) => {
 
     if (action.type === 'add-to-cart') {
+        const itemExists = state.cart.find(guitar => guitar.id === action.payload.item.id)
+        let updateCart: CartItem[] = []
+        if (itemExists) { // existe en el carrito
+            updateCart = state.cart.map(item => {
+                if (item.id === action.payload.item.id && item.quantity < MAX_ITEMS) {
+                    return { ...item, quantity: item.quantity + 1 }
+                } else {
+                    return item
+                }
+            })
+        } else {
+            const newItem: CartItem = { ...action.payload.item, quantity: 1 }
+            updateCart = [...state.cart, newItem]
+        }
         return {
-            ...state
+            ...state,
+            cart: updateCart
         }
     }
 

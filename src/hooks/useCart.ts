@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react'
-import { db } from '../data/db'
 import type { Guitar, CartItem } from '../types'
 
 export const useCart = () => {
@@ -10,7 +9,6 @@ export const useCart = () => {
         return localStorageCart ? JSON.parse(localStorageCart) : []
     }
 
-    const [data] = useState(db)
     const [cart, setCart] = useState(initialCart) // inicia con esa variable para revisar si hay elementos
 
     // useEffect para tener sincronizado nuestro carrito y estar escribiendo en localstorage  
@@ -20,19 +18,6 @@ export const useCart = () => {
 
     const MIN_ITEMS = 1
     const MAX_ITEMS = 5
-
-    function addToCart(item: Guitar) {
-        const itemExists = cart.findIndex(guitar => guitar.id === item.id)
-        if (itemExists >= 0) { // existe en el carrito
-            if (cart[itemExists].quantity >= MAX_ITEMS) return
-            const updateCart = [...cart] // tomo copia
-            updateCart[itemExists].quantity++ // realizo los cambios
-            setCart(updateCart) // lo seteo
-        } else {
-            const newItem: CartItem = { ...item, quantity: 1 }
-            setCart([...cart, newItem])
-        }
-    }
 
     function removeFromCart(id: Guitar['id']) {
         setCart(prevCart => prevCart.filter(guitar => guitar.id !== id))
@@ -74,9 +59,7 @@ export const useCart = () => {
 
 
     return {
-        data,
         cart,
-        addToCart,
         removeFromCart,
         decreasQuantity,
         increaseQuantity,
