@@ -1,33 +1,23 @@
-import { useReducer } from "react"
+import { useReducer, useEffect } from "react"
 import Header from "./components/Header"
 import Guitar from "./components/Guitar"
-import { useCart } from './hooks/useCart'
 import { cartReducer, initialState } from "./reducers/cart-reducer"
 
 function App() {
 
-  const {
-    cart,
-    removeFromCart,
-    decreasQuantity,
-    increaseQuantity,
-    isEmpty,
-    cartTotal,
-    clearCart } = useCart()
-
   const [state, dispatch] = useReducer(cartReducer, initialState)
+
+  // useEffect para tener sincronizado nuestro carrito y estar escribiendo en localstorage  
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(state.cart))
+  }, [state.cart]) // cada de cambie cart se actualiza en automatico con useEffect
 
   return (
     <>
 
       <Header
-        cart={cart}
-        removeFromCart={removeFromCart}
-        decreasQuantity={decreasQuantity}
-        increaseQuantity={increaseQuantity}
-        clearCart={clearCart}
-        isEmpty={isEmpty}
-        cartTotal={cartTotal}
+        cart={state.cart}
+        dispatch={dispatch}
       />
 
       <main className="container-xl mt-5" >
